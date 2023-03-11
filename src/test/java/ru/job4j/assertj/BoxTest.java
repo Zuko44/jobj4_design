@@ -50,14 +50,14 @@ class BoxTest {
     @Test
     void whenAreaIsZero() {
         Box box = new Box(0, 4);
-        double name = Math.round (box.getArea());
+        double name = Math.round(box.getArea());
         assertThat(name).isEqualTo(201).isNotNull().isGreaterThan(200);
     }
 
     @Test
     void whenAreaIsFour() {
         Box box = new Box(4, 4);
-        double name = Math.round (box.getArea());
+        double name = Math.round(box.getArea());
         assertThat(name).isEqualTo(28).isNotInfinite().isNotNegative();
     }
 }
