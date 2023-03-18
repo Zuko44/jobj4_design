@@ -1,9 +1,6 @@
 package ru.job4j.collection;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class SimpleArrayList<T> implements SimpleList<T> {
 
@@ -18,15 +15,14 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     @Override
     public void add(T value) {
         newSize();
-        container[size] = value;
-        size++;
+        container[size++] = value;
         modCount++;
     }
 
     @Override
     public T set(int index, T newValue) {
         Objects.checkIndex(index, size);
-        T replaced = container[index];
+        T replaced = get(index);
         container[index] = newValue;
         return replaced;
     }
@@ -34,10 +30,11 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     @Override
     public T remove(int index) {
         Objects.checkIndex(index, size);
-        T removed = container[index];
+        T removed = get(index);
         System.arraycopy(container, index + 1, container, index, size - index - 1);
         size--;
         modCount++;
+        container[container.length - 1] = null;
         return removed;
     }
 
@@ -54,13 +51,10 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     private void newSize() {
         if (container.length == size) {
-            T[] newArray = (T[]) new Object[container.length * 2];
-            System.arraycopy(container, 0, newArray, 0, size);
-            container = newArray;
+            container = Arrays.copyOf(container, container.length * 2);
         }
         if (container.length == 0) {
-            T[] newArray = (T[]) new Object[2];
-            container = newArray;
+            container = (T[]) new Object[2];
         }
     }
 
