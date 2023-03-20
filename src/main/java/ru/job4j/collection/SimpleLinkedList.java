@@ -8,26 +8,29 @@ import java.util.Objects;
 public class SimpleLinkedList<E> implements LinkedList<E> {
     private int size = 0;
     private int modCount = 0;
-    private Node<E> nextElement;
-    private Node<E> prevElement;
+    private Node<E> head;
 
     @Override
     public void add(E value) {
-        Node<E> newNode = new Node<>(value, null);
-        if (prevElement == null) {
-            nextElement = newNode;
-        } else {
-            prevElement.next = newNode;
+        Node<E> node = new Node<E>(value, null);
+        if (head == null) {
+            head = node;
+            size++;
+            return;
         }
-        prevElement = newNode;
-        size++;
+        Node<E> tail = head;
+        while (tail.next != null) {
+            tail = tail.next;
+        }
+        tail.next = node;
         modCount++;
+        size++;
     }
 
     @Override
     public E get(int index) {
         Objects.checkIndex(index, size);
-        Node<E> target = nextElement;
+        Node<E> target = head;
         for (int i = 0; i < index; i++) {
             target = target.next;
         }
@@ -38,7 +41,7 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
     public Iterator<E> iterator() {
         return new Iterator<>() {
             private final int expectedModCount = modCount;
-            private Node<E> count = nextElement;
+            private Node<E> count = head;
 
             @Override
             public boolean hasNext() {
