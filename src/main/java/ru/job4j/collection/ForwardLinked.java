@@ -11,7 +11,7 @@ public class ForwardLinked<T> implements Iterable<T> {
     private Node<T> head;
 
     public void add(T value) {
-        Node<T> node = new Node<T>(value, null);
+        Node<T> node = new Node<>(value, null);
         if (head == null) {
             head = node;
             size++;
@@ -39,13 +39,20 @@ public class ForwardLinked<T> implements Iterable<T> {
         if (head == null) {
             throw new NoSuchElementException();
         }
-        Node<T> next = head.next;
-        T nextValue = next.item;
-        head.next.item = null;
-        head.next = null;
+        Node<T> old = head;
         T oldValue = head.item;
-        head = next;
-        head.item = nextValue;
+        head = head.next;
+        old.next = null;
+        old.item = null;
+        /**
+         Node<T> next = head.next;
+         T nextValue = next.item;
+         head.next.item = null;
+         head.next = null;
+         T oldValue = head.item;
+         head = next;
+         head.item = nextValue;
+         **/
         return oldValue;
     }
 
