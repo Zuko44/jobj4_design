@@ -7,7 +7,7 @@ public class RevertLinked<T> implements Iterable<T> {
     private Node<T> head;
 
     public void add(T value) {
-        Node<T> node = new Node<T>(value, null);
+        Node<T> node = new Node<>(value, null);
         if (head == null) {
             head = node;
             return;
@@ -21,19 +21,18 @@ public class RevertLinked<T> implements Iterable<T> {
 
     public boolean revert() {
         boolean total = false;
-        if (head == null || head.next == null) {
-            return total;
+        if (head != null && head.next != null) {
+            Node<T> current = head;
+            Node<T> previous = head;
+            while (current != null) {
+                Node<T> next = current.next;
+                current.next = previous;
+                previous = current;
+                current = next;
+            }
+            head = previous;
+            total = true;
         }
-        Node<T> current = head;
-        Node<T> previous = head;
-        while (current != null) {
-            Node<T> next = current.next;
-            current.next = previous;
-            previous = current;
-            current = next;
-        }
-        head = previous;
-        total = true;
         return total;
     }
 
