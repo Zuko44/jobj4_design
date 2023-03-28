@@ -31,6 +31,7 @@ public class User {
         User user1 = new User("Ken", 11, calendar);
         User user2 = new User("Ken", 11, calendar);
         /**
+         * hash переопределён
          * hashOne - -889848241 ,hash1 - 889861306 ,bucket1 - 10
          * hashTwo - -889848241 ,hash2 - 889861306 ,bucket2 - 10
          */
@@ -50,4 +51,23 @@ public class User {
     public int hashCode() {
         return Objects.hash(name, children, birthday);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(children, user.children)
+                && Objects.equals(name, user.name)
+                && Objects.equals(birthday, user.birthday);
+    }
+    /**
+     * equals переопределён
+     * hashOne - 1389133897 ,hash1 - 1389154949 ,bucket1 - 5
+     * hashTwo - 1534030866 ,hash2 - 1534013309 ,bucket2 - 13
+     */
 }
