@@ -13,11 +13,11 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        if ((float) count / capacity >= LOAD_FACTOR) {
+        if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
-        final int i = indexFor(key);
-        final boolean rsl = table[i] == null;
+        int i = key != null ? indexFor(hash(key.hashCode())) : 0;
+        boolean rsl = table[i] == null;
         if (rsl) {
             table[i] = new MapEntry<>(key, value);
             count++;
@@ -30,8 +30,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return hashCode ^ (hashCode >>> 16);
     }
 
-    private int indexFor(K key) {
-        return (table.length - 1) & hash(key == null ? 0 : key.hashCode());
+    private int indexFor(int hash) {
+        return hash & (table.length - 1);
     }
 
     private void expand() {
@@ -40,15 +40,15 @@ public class SimpleMap<K, V> implements Map<K, V> {
         table = new MapEntry[capacity];
         for (MapEntry<K, V> entry : oldTable) {
             if (entry != null) {
-                final int i = indexFor(entry.key);
-                table[i] = new MapEntry<>(entry.key, entry.value);
+                int i = entry.key != null ? indexFor(hash(entry.key.hashCode())) : 0;
+                table[i] = entry;
             }
         }
     }
 
     @Override
     public V get(K key) {
-        final MapEntry<K, V> entry = table[indexFor(key)];
+        MapEntry<K, V> entry = key != null ? table[indexFor(hash(key.hashCode()))] : table[0];
         V value = null;
         if (entry != null) {
             value = keyEquals(key, entry.key) ? entry.value : null;
@@ -58,8 +58,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean remove(K key) {
-        final int i = indexFor(key);
-        final boolean rsl = table[i] != null && keyEquals(key, table[i].key);
+        int i = key != null ? indexFor(hash(key.hashCode())) : 0;
+        boolean rsl = table[i] != null && keyEquals(key, table[i].key);
         if (rsl) {
             table[i] = null;
             count--;
