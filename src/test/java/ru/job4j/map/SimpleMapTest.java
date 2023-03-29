@@ -126,7 +126,6 @@ class SimpleMapTest {
         assertThat(map).hasSize(4);
     }
 
-
     @Test
     void whenCheckPutZeroAndNull() {
         SimpleMap<Integer, String> map = new SimpleMap<>();

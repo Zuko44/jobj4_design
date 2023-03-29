@@ -51,7 +51,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         final MapEntry<K, V> entry = table[indexFor(key)];
         V value = null;
         if (entry != null) {
-            value = keysEquals(key, entry.key) ? entry.value : null;
+            value = keyEquals(key, entry.key) ? entry.value : null;
         }
         return value;
     }
@@ -59,7 +59,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         final int i = indexFor(key);
-        final boolean rsl = table[i] != null && keysEquals(key, table[i].key);
+        final boolean rsl = table[i] != null && keyEquals(key, table[i].key);
         if (rsl) {
             table[i] = null;
             count--;
@@ -95,7 +95,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         };
     }
 
-    private boolean keysEquals(K key1, K key2) {
+    private boolean keyEquals(K key1, K key2) {
         boolean total;
         if (key2 != null) {
             total = key1 == key2
