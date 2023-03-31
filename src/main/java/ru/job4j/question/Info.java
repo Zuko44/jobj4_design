@@ -26,7 +26,7 @@ public class Info {
     }
 
     public void setChanged(int changed) {
-        this.changed = +changed;
+        this.changed += changed;
     }
 
     public int getDeleted() {
