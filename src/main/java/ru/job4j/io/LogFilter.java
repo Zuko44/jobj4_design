@@ -17,8 +17,8 @@ public class LogFilter {
                 new BufferedOutputStream(
                         new FileOutputStream(file)
                 ))) {
-            log.forEach(out::write);
-        } catch (Exception e) {
+            log.forEach(out::println);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -26,16 +26,13 @@ public class LogFilter {
     public List<String> filter(String file) {
         List<String> log = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-            /**String substring = " 404 ";
-             for (String line = in.readLine(); line != null; line = in.readLine()) {
-             if (line.contains(substring)) {
-             log.add(line);
-             log.add(System.lineSeparator());
-             }
-             }*/
-            in.lines().filter(line -> line.contains(" 404 "))
-                    .map(line -> line + System.lineSeparator()).forEach(log::add);
-        } catch (Exception e) {
+            for (String line = in.readLine(); line != null; line = in.readLine()) {
+                String[] arr = line.split(" ");
+                if (arr[arr.length - 2].equals("404")) {
+                    log.add(line);
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return log;
