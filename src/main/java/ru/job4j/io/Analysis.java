@@ -16,14 +16,20 @@ public class Analysis {
                      ))) {
             String line;
             boolean flag = true;
+            String total = "";
             while ((line = read.readLine()) != null) {
                 String[] data = line.split(" ");
-                if (flag && (data[0].contains("500") || data[0].contains("400"))) {
-                    out.print(data[1] + ";");
-                    flag = false;
-                } else if (!flag && !data[0].contains("500") && !data[0].contains("400")) {
-                    flag = true;
-                    out.println(data[1] + ";");
+                /**if (flag && Integer.parseInt(data[0]) >= 400) {
+                 out.print(data[1] + ";");
+                 flag = false;
+                 } else if (!flag && Integer.parseInt(data[0]) < 400) {
+                 flag = true;
+                 out.println(data[1] + ";");
+                 }*/
+                total = total.equals("") && Integer.parseInt(data[0]) >= 400 ? data[1] + ";" : total;
+                if (Integer.parseInt(data[0]) < 400 && !total.equals("")) {
+                    out.println(total + (data[1] + ";"));
+                    total = "";
                 }
             }
         } catch (IOException e) {
