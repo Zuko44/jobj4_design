@@ -1,0 +1,33 @@
+package ru.job4j.io;
+
+import java.io.*;
+
+public class Analysis {
+    public static void main(String[] args) {
+        Analysis analysis = new Analysis();
+        analysis.unavailable("data/server.log", "data/target.csv");
+    }
+
+    public void unavailable(String source, String target) {
+        try (BufferedReader read = new BufferedReader(new FileReader(source));
+             PrintWriter out = new PrintWriter(
+                     new BufferedOutputStream(
+                             new FileOutputStream(target)
+                     ))) {
+            String line;
+            boolean flag = true;
+            while ((line = read.readLine()) != null) {
+                String[] data = line.split(" ");
+                if (flag && (data[0].contains("500") || data[0].contains("400"))) {
+                    out.print(data[1] + ";");
+                    flag = false;
+                } else if (!flag && !data[0].contains("500") && !data[0].contains("400")) {
+                    flag = true;
+                    out.println(data[1] + ";");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
