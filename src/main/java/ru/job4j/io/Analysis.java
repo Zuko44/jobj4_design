@@ -26,10 +26,15 @@ public class Analysis {
                  flag = true;
                  out.println(data[1] + ";");
                  }*/
-                total = total.equals("") && Integer.parseInt(data[0]) >= 400 ? data[1] + ";" : total;
-                if (Integer.parseInt(data[0]) < 400 && !total.equals("")) {
-                    out.println(total + (data[1] + ";"));
-                    total = "";
+                /**total = total.equals("") && Integer.parseInt(data[0]) >= 400 ? data[1] + ";" : total;
+                 if (Integer.parseInt(data[0]) < 400 && !total.equals("")) {
+                 out.println(total + (data[1] + ";"));
+                 total = "";
+                 }
+                 */
+                if (flag == (data[0].contains("500") || data[0].contains("400"))) {
+                    out.append(data[1]).append(';').append(flag ? "" : System.lineSeparator());
+                    flag = !flag;
                 }
             }
         } catch (IOException e) {
