@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class Search {
@@ -28,8 +29,16 @@ public class Search {
 
     public static void validate(String[] args) {
         Path path = Paths.get(args[0]);
-        if (args.length < 2 || !Files.exists(path) || !Files.isDirectory(path)) {
-            throw new IllegalArgumentException("less than two arguments or invalid path");
+        if (args.length < 2) {
+            throw new IllegalArgumentException("less than two arguments");
+        }
+
+        if (!Files.exists(path) || !Files.isDirectory(path)) {
+            throw new IllegalArgumentException("invalid path");
+        }
+
+        if (!Objects.equals(args[1], ".js")) {
+            throw new IllegalArgumentException("wrong format");
         }
     }
 }
