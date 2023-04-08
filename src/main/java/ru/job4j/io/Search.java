@@ -26,7 +26,7 @@ public class Search {
         return searcher.getPaths();
     }
 
-    public static void validate (String[] args) {
+    public static void validate(String[] args) {
         Path path = Paths.get(args[0]);
         if (args.length < 2 || !Files.exists(path) || !Files.isDirectory(path)) {
             throw new IllegalArgumentException("less than two arguments or invalid path");
