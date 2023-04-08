@@ -51,11 +51,14 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
              duplicate.put(fileProp, list);
              }
              */
-            List<Path> list = new ArrayList<>();
-            list.add(file.normalize());
-            if (duplicate.putIfAbsent(fileProp, list) != null) {
-                duplicate.get(fileProp).add(file.normalize());
-            }
+            /**List<Path> list = new ArrayList<>();
+             list.add(file.normalize());
+             if (duplicate.putIfAbsent(fileProp, list) != null) {
+             duplicate.get(fileProp).add(file.normalize());
+             }
+             */
+            duplicate.putIfAbsent(fileProp, new ArrayList<>());
+            duplicate.get(fileProp).add(file.normalize());
         }
         return super.visitFile(file, attrs);
     }
