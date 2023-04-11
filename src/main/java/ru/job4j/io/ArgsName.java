@@ -27,7 +27,7 @@ public class ArgsName {
     public String get(String key) {
         String str = values.get(key);
         if (str == null) {
-            throw new IllegalArgumentException("This key: '" + key + "' is missing");
+            throw new IllegalArgumentException(String.format("This key: '%s' is missing", key));
         }
         return values.get(key);
     }
@@ -43,16 +43,16 @@ public class ArgsName {
     private void validate(String str) {
         String[] str2 = str.split("=", 2);
         if (!str.contains("=")) {
-            throw new IllegalArgumentException("Error: This argument '" + str + "' does not contain an equal sign");
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain an equal sign", str));
         }
         if (str.charAt(0) != '-') {
-            throw new IllegalArgumentException("Error: This argument '" + str + "' does not start with a '-' character");
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not start with a '-' character", str));
         }
         if (str2[1].isEmpty()) {
-            throw new IllegalArgumentException("Error: This argument '" + str + "' does not contain a value");
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a value", str));
         }
         if (Objects.equals(str2[0], "-")) {
-            throw new IllegalArgumentException("Error: This argument '" + str + "' does not contain a key");
+            throw new IllegalArgumentException(String.format("Error: This argument '%s' does not contain a key", str));
         }
     }
 }
