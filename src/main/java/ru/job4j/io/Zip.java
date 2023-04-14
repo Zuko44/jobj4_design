@@ -1,10 +1,9 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -15,36 +14,38 @@ public class Zip {
                 new File("./pom.xml"),
                 new File("./pom.zip")
         );
-        Zip zip2 = new Zip();
         ArgsName arguments = ArgsName.of(args);
-        String directory = arguments.get("d");
+        Path directory = Path.of(arguments.get("d"));
         String exclude = arguments.get("e");
         File output = new File(arguments.get("o"));
-        validate(args.length, directory);
-        List<File> files = Search.search(
-                        Paths.get(directory),
-                        t -> !t.toFile().getName().endsWith(exclude)
-                ).stream()
-                .map(Path::toFile)
-                .collect(Collectors.toList());
-        zip2.packFiles(files, output);
+        validate(args.length, directory, exclude, output);
+        List<Path> files = Search.search(
+                directory,
+                t -> !t.toFile().getName().endsWith(exclude)
+        );
+        zip.packFiles(files, output);
     }
 
-    private static void validate(int size, String directory) {
+    private static void validate(int size, Path directory, String exclude, File output) {
         if (size != 3) {
             throw new IllegalArgumentException("arguments must be 3");
         }
-        File file = new File(directory);
-        if (!file.exists() || !file.isDirectory()) {
+        if (!Files.exists(directory) || !Files.isDirectory(directory)) {
             throw new IllegalArgumentException("invalid path");
+        }
+        if (exclude.charAt(0) != '.') {
+            throw new IllegalArgumentException("wrong format");
+        }
+        if (!output.getName().endsWith(".zip")) {
+            throw new IllegalArgumentException("format must be zip");
         }
     }
 
-    public void packFiles(List<File> sources, File target) {
+    public void packFiles(List<Path> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            for (File file : sources) {
-                zip.putNextEntry(new ZipEntry(file.getPath()));
-                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(file))) {
+            for (Path file : sources) {
+                zip.putNextEntry(new ZipEntry(file.toFile().getPath()));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(file.toFile()))) {
                     zip.write(out.readAllBytes());
                 }
             }
