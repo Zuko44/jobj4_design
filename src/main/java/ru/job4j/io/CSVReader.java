@@ -1,6 +1,8 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -49,29 +51,29 @@ public class CSVReader {
     }
 
     public static void main(String[] args) throws Exception {
-        validate(args);
-        ArgsName argsName = ArgsName.of(args);
-        handle(argsName);
-    }
-
-    public static void validate(String[] args) {
         if (args.length != 4) {
             throw new IllegalArgumentException("arguments must be 4");
         }
-        String[] str = args[0].split("=", 2);
-        if (!str[1].contains(".csv")) {
+        ArgsName argsName = ArgsName.of(args);
+        validate(argsName);
+        handle(argsName);
+    }
+
+    public static void validate(ArgsName argsName) {
+        Path path = Path.of(argsName.get("path"));
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("The file does not exist");
+        }
+        if (!argsName.get("path").contains(".csv")) {
             throw new IllegalArgumentException("invalid path");
         }
-        String[] str2 = args[1].split("=", 2);
-        if (!str2[1].contains(";") || str2[1].length() > 1) {
+        if (!argsName.get("delimiter").contains(";") || argsName.get("delimiter").length() > 1) {
             throw new IllegalArgumentException("wrong delimiter");
         }
-        String[] str3 = args[2].split("=", 2);
-        if (!(str3[1].contains("stdout") || str3[1].contains(".csv"))) {
+        if (!(argsName.get("out").contains("stdout") || argsName.get("out").contains(".csv"))) {
             throw new IllegalArgumentException("wrong path");
         }
-        String[] str4 = args[3].split("=", 2);
-        String[] filters = str4[1].split(",");
+        String[] filters = argsName.get("filter").split(",");
         if (filters.length < 1) {
             throw new IllegalArgumentException("there must be at least one filter");
         }
