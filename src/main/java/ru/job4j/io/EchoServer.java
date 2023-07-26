@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
-    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+    private static final Logger EchoServer = LoggerFactory.getLogger(UsageLog4j.class.getName());
 
     public static void main(String[] args) throws IOException {
         try (ServerSocket server = new ServerSocket(9000)) {
@@ -36,7 +36,7 @@ public class EchoServer {
                 }
             }
         } catch (IOException e) {
-            LOG.error("Exception in log example", e);
+            EchoServer.error("Exception in log example", e);
         }
     }
 }
