@@ -42,9 +42,9 @@ public class Contact implements Serializable {
 
     @Override
     public String toString() {
-        return "Contact{" +
-                "zipCode=" + zipCode +
-                ", phone='" + phone + '\'' +
-                '}';
+        return "Contact{"
+                + "zipCode=" + zipCode
+                + ", phone='" + phone + '\''
+                + '}';
     }
 }
