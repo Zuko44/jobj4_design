@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Slave {
     private boolean sex;
     private int age;
-    String sobriquet;
+    private String sobriquet;
     private Contact contact;
     private String[] owners;
 

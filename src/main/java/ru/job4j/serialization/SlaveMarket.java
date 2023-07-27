@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 public class SlaveMarket {
     public static void main(String[] args) {
         Slave slave = new Slave(true, 32, "blackfoot", new Contact(11111, "11-111"),
-                new String[]{"Mr Bennett Daddy", "Dicky Speck"});
+                new String[]{"Mr Bennett", "Dicky Speck"});
 
         Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(slave));
