@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<slave sex="true" age="32">
+    <aliase sobriquet="The Lusty Argonian Maid"/>
+    <contacts num="111111" phone="11-1111"/>
+    <owners>
+        <owner>Django</owner>
+        <owner>Schultz</owner>
+    </owners>
+</slave>
