@@ -19,12 +19,12 @@ public class Slave {
 
     @Override
     public String toString() {
-        return "Slave{" +
-                "sex=" + sex +
-                ", age=" + age +
-                ", sobriquet='" + sobriquet + '\'' +
-                ", contact=" + contact +
-                ", owners=" + Arrays.toString(owners) +
-                '}';
+        return "Slave{"
+                + "sex=" + sex
+                + ", age=" + age
+                + ", sobriquet='" + sobriquet + '\''
+                + ", contact=" + contact
+                + ", owners=" + Arrays.toString(owners)
+                + '}';
     }
 }
