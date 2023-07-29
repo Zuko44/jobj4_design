@@ -50,6 +50,26 @@ public class Slave {
         }
     }
 
+    public boolean getSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getSobriquet() {
+        return sobriquet;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getOwners() {
+        return owners;
+    }
+
     @Override
     public String toString() {
         return "Slave{"

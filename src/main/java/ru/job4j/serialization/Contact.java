@@ -53,7 +53,6 @@ public class Contact implements Serializable {
     public String toString() {
         return "Contact{"
                 + "zipCode=" + zipCode
-                + ", phone='" + phone + '\''
-                + '}';
+                + ", phone='" + phone + '\'' + '}';
     }
 }
