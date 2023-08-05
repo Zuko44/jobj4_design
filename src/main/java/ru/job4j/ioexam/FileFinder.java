@@ -79,17 +79,7 @@ public class FileFinder {
      * Здесь, если передаётся маска, производится экранирование символов
      */
     private static String preparePattern(String pattern) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < pattern.length(); i++) {
-            char c = pattern.charAt(i);
-            if (c == '*') {
-                sb.append(".*");
-            } else if (c == '.') {
-                sb.append("\\.");
-            } else {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
+        String value = pattern.replace(".", "\\.");
+        return value.replace("*", ".*");
     }
 }
