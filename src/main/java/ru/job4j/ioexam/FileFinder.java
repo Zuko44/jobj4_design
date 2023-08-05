@@ -80,6 +80,7 @@ public class FileFinder {
      */
     private static String preparePattern(String pattern) {
         String value = pattern.replace(".", "\\.");
-        return value.replace("*", ".*");
+        String value2 = value.replace("?", ".?");
+        return value2.replace("*", ".*");
     }
 }
