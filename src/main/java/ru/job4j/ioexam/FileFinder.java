@@ -29,11 +29,14 @@ public class FileFinder {
                 new BufferedOutputStream(
                         new FileOutputStream(argsName.get("o"))
                 ))) {
-            if ("mask".equals(argsName.get("t"))) {
+            if ("name".equals(argsName.get("t"))) {
+                search(path, p -> p.toFile().getName().equals(argsName.get("n"))).forEach(out::println);
+            } else if ("mask".equals(argsName.get("t"))) {
+                FileFilter fileFilter = new FileFilter(preparePattern(argsName.get("n")));
+                search(path, p -> fileFilter.accept(path.toFile(), p.toFile().getName())).forEach(out::println);
+            } else {
                 Pattern pattern = Pattern.compile(argsName.get("n"));
                 search(path, p -> pattern.matcher(p.toFile().getName()).matches()).forEach(out::println);
-            } else {
-                search(path, p -> p.toFile().getName().equals(argsName.get("n"))).forEach(out::println);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -41,7 +44,7 @@ public class FileFinder {
     }
 
     /**
-     * Поиск файлов с учётом типа поиска
+     * Поиск файлов и возврат List-а с файлами
      */
     public static List<Path> search(Path root, Predicate<Path> condition) {
         SearchFiles searcher = new SearchFiles(condition);
@@ -56,7 +59,7 @@ public class FileFinder {
     /**
      * Валидация параметров командной строки
      */
-    public static void validate(ArgsName args) {
+    private static void validate(ArgsName args) {
         Path path = Path.of(args.get("d"));
         if (!Files.exists(path)) {
             throw new IllegalArgumentException("directory does not exist");
@@ -70,5 +73,23 @@ public class FileFinder {
         if (args.get("o").length() < 1) {
             throw new IllegalArgumentException("wrong path");
         }
+    }
+
+    /**
+     * Здесь, если передаётся маска, производится экранирование символов
+     */
+    private static String preparePattern(String pattern) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < pattern.length(); i++) {
+            char c = pattern.charAt(i);
+            if (c == '*') {
+                sb.append(".*");
+            } else if (c == '.') {
+                sb.append("\\.");
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }
