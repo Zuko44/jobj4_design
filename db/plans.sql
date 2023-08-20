@@ -22,7 +22,7 @@ insert into fauna(name, avg_age, discovery_date) values(
 	
 insert into fauna(name, avg_age, discovery_date) values(
 	'Strix hadorami', '1825', '2015-01-01');
-==========================================================
+
 select * from fauna where name like '%fish%';
 
 select * from fauna where avg_age between '10000' and '21000';
