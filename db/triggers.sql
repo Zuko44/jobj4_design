@@ -31,15 +31,16 @@ create or replace function big_tax()
 $$
     BEGIN
         update products
-        set price = price + price * 0.13;
+        set price = price + price * 0.13
+		where id = (select id from inserted);
         return NEW;
     END;
 $$
 LANGUAGE 'plpgsql';
 
 create trigger big_tax
-    after insert
-    on products
+    after insert on products
+	referencing new table as inserted
     for each STATEMENT
     execute procedure big_tax();
 	
