@@ -42,3 +42,4 @@ move backward 4 from cursor_products;
 fetch prior from cursor_products;
 fetch prior from cursor_products;
 close cursor_products;
+commit;
