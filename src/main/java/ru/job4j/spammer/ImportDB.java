@@ -3,6 +3,7 @@ package ru.job4j.spammer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,12 +23,12 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();
-        /**try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("data/app.properties")) {
-         cfg.load(in);
-         }*/
-        try (FileReader fileReader = new FileReader("data/app.properties")) {
-            cfg.load(fileReader);
+        try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("app.properties")) {
+            cfg.load(in);
         }
+        /**try (FileReader fileReader = new FileReader("data/app.properties")) {
+         cfg.load(fileReader);
+         }*/
         ImportDB db = new ImportDB(cfg, "./dump.txt");
         db.save(db.load());
     }
@@ -37,7 +38,7 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             for (String line = rd.readLine(); line != null; line = rd.readLine()) {
                 String[] lines = line.split(";");
-                if (lines.length < 2 || lines[0].length() < 1 || lines[1].length() < 1) {
+                if (lines.length < 2 || lines[0].isBlank() || lines[1].isBlank()) {
                     throw new IllegalArgumentException("parameters should be 2");
                 }
                 users.add(new User(lines[0], lines[1]));
