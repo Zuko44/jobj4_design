@@ -33,3 +33,4 @@ public class Fool {
         return out;
     }
 }
+
